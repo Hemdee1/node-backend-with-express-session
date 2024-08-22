@@ -81,8 +81,9 @@ const Login = async (req, res) => {
 
 const ChangePassword = async (req, res) => {
   const { oldPassword, newPassword } = req.body;
-  // get the id of the user from params
-  const { id } = req.params;
+
+  // get the id of the user from the session
+  const id = req.session.userId;
 
   try {
     // using the id, fetch the user from the database
@@ -133,8 +134,10 @@ const Logout = async (req, res) => {
 };
 
 const UpdateProfile = async (req, res) => {
-  const { id } = req.params;
   const { firstName, lastName } = req.body;
+
+  // get the id of the user from the session
+  const id = req.session.userId;
 
   try {
     const user = await userModel.findByIdAndUpdate(

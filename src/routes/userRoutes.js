@@ -8,6 +8,7 @@ const {
   getAllUsers,
   autoLogin,
 } = require("../controller/userController");
+const checkAuthenticatedUser = require("../middleware/checkAuthenticatedUser");
 
 const userRoutes = express.Router();
 
@@ -19,9 +20,11 @@ const userRoutes = express.Router();
 
 userRoutes.post("/signup", Signup);
 userRoutes.post("/login", Login);
-userRoutes.put("/change-password/:id", ChangePassword);
 userRoutes.post("/logout", Logout);
-userRoutes.put("/update/:id", UpdateProfile);
+
+// add authorization so that only logged in user can have access to the route
+userRoutes.put("/change-password", checkAuthenticatedUser, ChangePassword);
+userRoutes.put("/update", checkAuthenticatedUser, UpdateProfile);
 
 userRoutes.get("/autologin", autoLogin);
 
